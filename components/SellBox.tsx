@@ -1,8 +1,28 @@
+'use client';
 
 import { ClockIcon, CalendarDaysIcon } from '@heroicons/react/24/outline';
 import { ISell } from '@/types/sell.type';
+import DeleteButton from './ui/DeleteButton';
+import { errorToast } from '@/utils/toast';
 
-export const SellBox = ({ sell, index }: { sell: ISell, index: number }) => {    
+export const SellBox = ({ sell, index, isLoading, setIsLoading }: { sell: ISell, index: number, isLoading: boolean, setIsLoading: (isLoading: boolean) => void }) => {
+
+  const handleDelete = async (id: string) => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`/api/sell`, {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) {
+        errorToast('Failed to delete sell');
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <div
@@ -33,10 +53,13 @@ export const SellBox = ({ sell, index }: { sell: ISell, index: number }) => {
             <CalendarDaysIcon className="h-4 w-4" />
             <span>{sell.day}/{sell.month}/{sell.year}</span>
           </div>
-            <div className="flex items-center gap-1.5">
-              <ClockIcon className="h-4 w-4" />
-              <span>{new Date(sell.createdAt).toLocaleTimeString()}</span>
-            </div>
+          <div className="flex items-center gap-1.5">
+            <ClockIcon className="h-4 w-4" />
+            <span>{new Date(sell.createdAt).toLocaleTimeString()}</span>
+          </div>
+          <div className='ml-auto'>
+            <DeleteButton onDelete={() => handleDelete(sell._id)} isLoading={isLoading} />
+          </div>
         </div>
       </div>
     </div>

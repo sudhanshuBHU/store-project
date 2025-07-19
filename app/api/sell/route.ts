@@ -39,3 +39,10 @@ export async function GET(){
   const totalSells = sells.reduce((acc, sell) => acc + sell.amount, 0);
   return NextResponse.json({ sells, totalSells }, { status: 200 });
 }
+
+export async function DELETE(req: NextRequest) {
+  await dbConnect();
+  const { id } = await req.json();
+  await SellKhaini.findByIdAndDelete(id);
+  return NextResponse.json({ message: 'Sell deleted successfully' }, { status: 200 });
+}

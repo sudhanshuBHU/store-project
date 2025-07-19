@@ -193,7 +193,7 @@ const AddTransactions = () => {
                         </div>
                     </div>
                 ) : sells.length > 0 ? (
-                    <ShowSells sells={sells} />
+                    <ShowSells sells={sells} isLoading={sellsLoading} setIsLoading={setIsLoading} />
                 ) : (
                     <div className='flex items-center justify-center h-full'>
                         <p className='text-gray-500'>No sells for today</p>

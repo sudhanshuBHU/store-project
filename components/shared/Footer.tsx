@@ -12,7 +12,7 @@ const Footer = () => (
         <h4 className="font-semibold mb-2">Sitemap</h4>
         <ul className="space-y-1">
           <li><Link href="/" className="hover:underline">Home</Link></li>
-          <li><Link href="/" className="hover:underline">Show Stats</Link></li>
+          <li><Link href="/stats" className="hover:underline">Show Stats</Link></li>
         </ul>
       </div>
       <div>

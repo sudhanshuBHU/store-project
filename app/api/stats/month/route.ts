@@ -12,9 +12,16 @@ export async function GET(request: NextRequest) {
 
     const sells = await SellKhaini.find({ month, year }).sort({ updatedAt: -1 });
     
-    const x = sells.map((sell) => new Date(sell.createdAt).toLocaleDateString('en-US', { day: 'numeric' }));
-    const y = sells.map((sell) => sell.amount);
-    const title = `Sales Data for ${month}/${year}`;
+    const totalSells = sells.reduce((acc, sell) => acc + sell.amount, 0);
+    const dailyTotals = sells.reduce((acc, sell) => {
+        const day = new Date(sell.createdAt).toLocaleDateString('en-US', { day: 'numeric' });
+        acc[day] = (acc[day] || 0) + sell.amount;
+        return acc;
+    }, {} as Record<string, number>);
 
-    return NextResponse.json({ x, y, title });
+    const x = Object.keys(dailyTotals);
+    const y = Object.values(dailyTotals);
+    const title = `Sales Data for ${new Date().toLocaleString('default', { month: 'long' })} ${year}`;
+
+    return NextResponse.json({ x: x.reverse(), y: y.reverse(), title, totalSells });
 }

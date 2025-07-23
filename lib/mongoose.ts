@@ -19,12 +19,14 @@ if (!(global as { mongoose?: MongooseCache }).mongoose) {
 
 async function dbConnect() {
   if (cached.conn) {
+    // console.log('Connected to MongoDB');
     return cached.conn;
   }
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
       bufferCommands: false,
     }).then((mongoose) => {
+      // console.log('Connected to MongoDB');
       return mongoose;
     });
   }

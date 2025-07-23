@@ -31,6 +31,7 @@ const AddTransactions = () => {
                 method: 'GET'
             });
             const data: { sells: ISell[], totalSells: number } = await res.json();
+            console.log(data.sells);
             setSells(data.sells);
             setDailyAmount(data.totalSells);
             setSellsLoading(false);

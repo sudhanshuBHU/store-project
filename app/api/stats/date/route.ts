@@ -12,9 +12,10 @@ export async function GET(request: NextRequest) {
 
     const sells = await SellKhaini.find({ day, month, year }).sort({ updatedAt: -1 });
     
+    const totalSells = sells.reduce((acc, sell) => acc + sell.amount, 0);
     const x = sells.map((sell) => new Date(sell.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }));
     const y = sells.map((sell) => sell.amount);
     const title = `Sales Data for ${day}/${month}/${year}`;
 
-    return NextResponse.json({ x, y, title });
+    return NextResponse.json({ x: x.reverse(), y: y.reverse(), title, totalSells });
 }
